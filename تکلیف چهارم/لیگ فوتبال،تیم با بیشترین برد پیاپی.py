@@ -1,38 +1,65 @@
+# گرفتن تعداد ورودی
 n = int(input())
-input()
+input() # اولین خط ورودی (همون سر تیتر هایی که لازمشون نداریم) رو بیخیال شو
 data= []
 
+# تبدیل رشته های داده به لیست
 for i in range(n):
     data.append(input().split(',')) 
 
+# اینجا قسمت اصلی کده
+def find_team_with_most_consecutive_wins(matches): # یه اسم عجیب غریب گذاشتم براش و یه ورودی به اسم مچز(انگلیسی نمیتونم بنویسم) بهش دادیم
+    from collections import defaultdict # از این استفاده میکنیم تا یه دیکشنری *خالی* تعریف کنیم که مقدار کلید هاش فقط عدد باشن
 
-def find_team_with_most_consecutive_wins(matches):
-    from collections import defaultdict
+    win_streaks = defaultdict(int)# تعریف دیکشنری خالی
+    max_streaks = defaultdict(int)# //
 
-    win_streaks = defaultdict(int)
-    max_streaks = defaultdict(int)
+    matches.sort(key=lambda x: x[0])# اومدیم ورودی تابعمون رو مرتب کردیم بر اساس اولین مقدارشون(ورودی تابع ما لیست هستش) 
+    # اون لامبدا یی که اون بالا هستش هم فقط برای اینه که بتونیم یه تابع رو توی یه خط تعریف کنیم
+    # میتونید به جاش برید اول کد و یه همچین چیزی بزنید:
+    # def firstValue(x):
+    #     return x[0]
+    # بعد بیاید اینجا:
+    # matches.sort(key=firstValue)
 
-    matches.sort(key=lambda x: x[0])
 
     for match in matches:
         date, home_team, away_team, ftr = match[0], match[1], match[2], match[5]
+        # این کد بالاییه و پایینیه باهم یکین
+        '''
+        date = match[0]
+        home_team = match[1]
+        .
+        .
+        .
+        '''
 
-        if ftr == 'H':
+        if ftr == 'H': # اگر برنده بازی تیم میزبان بود
             winner = home_team
-        elif ftr == 'A':
+        elif ftr == 'A':# اگر برنده بازی تیم مهمان بود
             winner = away_team
         else:
-            continue
+            continue # در غیر این صورت حلقه رو یکبار دیگه تکرار کن(کد های بعد از این اجرا نمیشن!)
 
-        win_streaks[winner] += 1
-        max_streaks[winner] = max(max_streaks[winner], win_streaks[winner])
-
+        win_streaks[winner] += 1 # به تعداد برد های پیاپی تیم برنده یک عدد اضافه کن
+        # چون بالا تر ما گفته بودیم که حتما دیکشنری ما مقدار هاش عدد هستن میتونیم به کلیدی که *هنوز توی دیکشنری وجود نداره* یه واحد اضافه کنیم
+        # و اینشکلی هم تیم رو به دیکشنری اضافه کردیم هم مقدارش رو از 0 (دیفالت) کردیم 1
+        
+        
+        max_streaks[winner] = max(max_streaks[winner], win_streaks[winner]) # ما توی مکس_استریک بیشترین برد پیاپی هر تیم رو میزاریم
+        # اینجاهم داریم میگیم اگر برد های پیاپی کنونی یک تیم بیشتر شد از بیشترین برد پیاپی ای که قبلا داشته
+        #(چون مقلا ممکنه که یک تیم 5 بار برنده بشه بعد یک بار ببازه و بعد دوباره 3 بار ببره)
+        # مقدار بیشترین برد پیاپی اون تیم رو (که توی مکس_اسکتیریک نگه داشته بودیم) برابر بزار با مقدار برد پیاپی ای که الان داره
+        
+        
+        # تعداد برد پیاپی  کنونی تیم بازنده رو برابر صفر بزار
         for team in [home_team, away_team]:
             if team != winner:
                 win_streaks[team] = 0
 
-    best_team = max(max_streaks, key=max_streaks.get)
-    return best_team
+    best_team = max(max_streaks, key=max_streaks.get) # تیمی که توی لیست مکس_استریک بیشترین مقدار رو داره رو به عنوان بهترین تیم در نظر بگیر
+    #                            ^^^^^^^^^^^^^^^^^^^ این یعنی بر اساس مقدارشون بزرگ ترین رو پیدا کن نه بر اساس کلید
+    return best_team # بهترین تیم رو برگردون
 
 
-print(find_team_with_most_consecutive_wins(data))
+print(find_team_with_most_consecutive_wins(data)) # جواب رو پرینت کن
