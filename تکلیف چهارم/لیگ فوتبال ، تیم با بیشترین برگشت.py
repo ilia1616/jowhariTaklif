@@ -41,8 +41,4 @@ for j in data:
         else:
             comeBacks[awayTeam] += 1
 
-<<<<<<< HEAD
 print(max(comeBacks, key=comeBacks.get))# از توی دیکشنری، کلید با بیشترین مقدار را (تیم با بیشترین کام بک) برگردانp
-=======
-print(max(comeBacks))# از توی دیکشنری، کلید با بیشترین مقدار را (تیم با بیشترین کام بک) برگردان
->>>>>>> 05ff89b6243a2c45f5161e707224aa97608c10fa
