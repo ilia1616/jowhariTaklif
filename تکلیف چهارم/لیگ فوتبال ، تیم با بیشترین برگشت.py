@@ -38,4 +38,4 @@ for j in data:
         else:
             comeBacks[awayTeam] += 1
 
-print(max(comeBacks))# از توی دیکشنری، کلید با بیشترین مقدار را (تیم با بیشترین کام بک) برگردان
+print(max(comeBacks, key=comeBacks.get))# از توی دیکشنری، کلید با بیشترین مقدار را (تیم با بیشترین کام بک) برگردانp
