@@ -1,74 +1,47 @@
-x = input().split()
+import math
 
-points = []
-for i in x:
-    points.append(i.split(','))
-
+# تابع برای محاسبه مساحت چندضلعی با استفاده از فرمول گیانی
 def calculate_area(points):
     n = len(points)
     area = 0
     for i in range(n):
         j = (i + 1) % n
-        area += points[i][0] * points[j][1]
-        area -= points[j][0] * points[i][1]
-    return abs(area) / 2
+        area += int(points[i][0]) * int(points[j][1])
+        area -= int(points[j][0]) * int(points[i][1])
+    return int(abs(area) / 2)
 
+# تابع برای محاسبه ضرب متقاطع
+def cross(o, a, b):
+    return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
 
-def do_i_need_this_lower(x0,y0,x1,y1,x2,y2):
-    if x2 != x0:
-        m = (y2 - y0) / (x2 - x0)
-    else:
-        return False
+# تابع برای محاسبه هول فاصل
+def convex_hull(points):
+    points = sorted(points)  # مرتب کردن نقاط
+    lower = []
+    for p in points:
+        while len(lower) >= 2 and cross(lower[-2], lower[-1], p) <= 0:
+            lower.pop()
+        lower.append(p)
     
-    if y1 > m * (x1 - x0) + y0:
-        return False
-    else:
-        return True
-def do_i_need_this_upper(x0,y0,x1,y1,x2,y2):
-    if x2 != x0:
-        m = (y2 - y0) / (x2 - x0)
-    else:
-        return False
+    upper = []
+    for p in reversed(points):
+        while len(upper) >= 2 and cross(upper[-2], upper[-1], p) <= 0:
+            upper.pop()
+        upper.append(p)
     
-    if y1 < m * (x1 - x0) + y0:
-        return False
-    else:
-        return True
-    
-X = sorted(points) # مرتب کردن بر اساس طول
-# pointsY = sorted(points, key=lambda x: x[1])
+    return lower[:-1] + upper[:-1]
 
-lowerPart = []
-upperPart = []
-lowerY = X[0][1]
-for i in X:
-    if i[1] <= lowerY:
-        lowerPart.append(i)
-    if i[1] >= lowerY:
-        upperPart.append(i)
-    
-neededLowerPart = [lowerPart[0]]
-for i in range(len(lowerPart) - 2):
-    if do_i_need_this_lower(int(lowerPart[i][0]),int(lowerPart[i][1]),
-                   int(lowerPart[i+1][0]), int(lowerPart[i+1][1]),
-                    int(lowerPart[(i+2)][0]),int(lowerPart[(i+2)][1])):
-        neededLowerPart.append(lowerPart[i+1])
-neededLowerPart.append(lowerPart[-1])
+# خواندن ورودی
+x = input().split()
 
+# تبدیل ورودی به لیست نقاط
+points = [tuple(map(int, i.split(','))) for i in x]
 
+# پیدا کردن هول فاصل
+hull = convex_hull(points)
 
-neededUpperPart = [upperPart[0]]
-for i in range(len(upperPart) - 2):
-    if do_i_need_this_upper(int(upperPart[i][0]),int(upperPart[i][1]),
-                   int(upperPart[i+1][0]), int(upperPart[i+1][1]),
-                    int(upperPart[(i+2)][0]),int(upperPart[(i+2)][1])):
-        neededLowerPart.append(lowerPart[i+1])
-neededUpperPart.append(upperPart[-1])
+# محاسبه مساحت هول فاصل
+area = calculate_area(hull)
 
-Points = tuple(neededLowerPart + neededUpperPart[::-1]) # نقاط به ترتیب پادساعتگرد هستند(برای محاسبه مساحت نیاز داریم که نقاط به ترتیب باشند)
-finalPoints = []
-for i in Points:
-    if i not in finalPoints:
-        finalPoints.append(i)
-        
-print(calculate_area(finalPoints))
+# چاپ نتیجه (قسمت صحیح مساحت که به سمت پایین گرد شده است)
+print(area)
