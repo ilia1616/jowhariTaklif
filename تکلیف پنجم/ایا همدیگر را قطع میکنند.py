@@ -72,9 +72,24 @@ else:
 
     # بررسی حالت موازی بودن
     if m0 == m1:
-        print("no")
+        # بررسی هم‌پوشانی: اگر شیب‌ها برابر باشند و نقطه‌ای از یک پاره‌خط روی دیگری بیفتد
+        b0 = float(first_line[0][1]) - m0 * float(first_line[0][0])  # عرض از مبدا پاره‌خط اول
+        b1 = float(second_line[0][1]) - m1 * float(second_line[0][0])  # عرض از مبدا پاره‌خط دوم
+        
+        if b0 == b1:  # بررسی اینکه آیا خطوط بر روی یکدیگر قرار دارند
+            # بررسی هم‌پوشانی بازه‌های پاره‌خط‌ها
+            if (
+                max(float(first_line[0][0]), float(first_line[1][0])) >= min(float(second_line[0][0]), float(second_line[1][0]))
+                and
+                max(float(second_line[0][0]), float(second_line[1][0])) >= min(float(first_line[0][0]), float(first_line[1][0]))
+            ):
+                print("yes")
+            else:
+                print("no")
+        else:
+            print("no")
     else:
-        # محاسبه X
+        # محاسبه X نقطه برخورد
         X = (-m0 * float(first_line[0][0]) + float(first_line[0][1]) + m1 * float(second_line[0][0]) - float(second_line[0][1])) / (m1 - m0)
 
         if (
