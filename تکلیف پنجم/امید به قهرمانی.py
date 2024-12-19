@@ -41,6 +41,21 @@ for i in sorted_data:
         
 # فرض کنید 3 تا بازی باقیمانده داریم
 scenarios = list(product(['H', 'D', 'A'], repeat=len(remaining_matches))) # ['H','H','H'] | ['H','H','D'] | ['H','H','A'] | ....
+winner_chance = defaultdict(int)
 
 for possible in scenarios:
-    
+    tmp_score = teams_score.copy()
+
+    for res in range(len(possible)):
+        if possible[res] == 'H':
+            tmp_score[remaining_matches[res][1]] += 3
+        elif possible[res] == 'A':
+            tmp_score[remaining_matches[res][2]] += 3
+        elif possible[res] == 'D':
+            tmp_score[remaining_matches[res][1]] += 1
+            tmp_score[remaining_matches[res][2]] += 1
+            
+    winner_chance[max(tmp_score,key=tmp_score.get)] += 1
+
+for i in winner_chance:
+    print(winner_chance.pop(max(winner_chance, key=winner_chance.get)), end=",")
