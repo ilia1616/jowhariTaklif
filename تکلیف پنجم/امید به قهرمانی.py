@@ -1,4 +1,5 @@
 from collections import defaultdict
+from itertools import product # با این میتونیم تمام حالت های ممکن برای بازی های باقی مانده رو محاسبه کنیم
 
 n = int(input())
 d = input() # ['day/month/year']
@@ -20,11 +21,11 @@ sorted_data = sorted(raw_data)
 
 given_date = change_date(d)
 
-remaining_match = []
+remaining_matches = []
 
 for i in sorted_data:
     if given_date < i[0]:
-        remaining_match.append(i)
+        remaining_matches.append(i)
         sorted_data.remove(i)
         
 teams_score = defaultdict(int)
@@ -38,3 +39,8 @@ for i in sorted_data:
         teams_score[i[1]] += 1
         teams_score[i[2]] += 1
         
+# فرض کنید 3 تا بازی باقیمانده داریم
+scenarios = list(product(['H', 'D', 'A'], repeat=len(remaining_matches))) # ['H','H','H'] | ['H','H','D'] | ['H','H','A'] | ....
+
+for possible in scenarios:
+    
