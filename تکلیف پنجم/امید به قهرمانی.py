@@ -128,5 +128,3 @@ for possible in scenarios:
 final = sorted(winner_chance, key=winner_chance.get, reverse=True)
 
 print(','.join(final))
-# final = sorted(winner_chance.items(), key=lambda x: -x[1])
-# print(','.join(team for team, _ in final))
