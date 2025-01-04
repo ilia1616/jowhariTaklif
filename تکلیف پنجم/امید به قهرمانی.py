@@ -54,10 +54,14 @@ for possible in scenarios:
             tmp_score[remaining_matches[res][1]] += 1
             tmp_score[remaining_matches[res][2]] += 1
         
-    max_score = max(tmp_score.values())
-    for team, score in tmp_score.items():
-        if score == max_score:
-            winner_chance[team] += 1
+    # max_score = max(tmp_score.values())
+    tmp_score = sorted(tmp_score,key=tmp_score.get)
+    i = 0
+    for team in tmp_score:
+        # if score == max_score:
+        #     winner_chance[team] += 1
+        winner_chance[team] += i
+        i+=1
 
 final = sorted(winner_chance, key=winner_chance.get, reverse=True)
 
